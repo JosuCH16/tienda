@@ -1,11 +1,11 @@
 body {
-    background-color: bisque;
+    background-color: #1a1a2e;
     font-family: serif;
 }
 
 header {
     position: fixed;
-    background-color: #6666FF;
+    background-color: #16213e;
     top: 0;
     left: 0;
     width: 100%;
@@ -14,28 +14,31 @@ header {
 }
 
 aside {
-    position: fixed;  
-    background-color: #99FF99;
+    position: fixed;
+    background-color: #0f3460;
     top: 110px;
     left: 0;
     width: 20%;
     bottom: 20px;
     padding: 10px;
+    border-right: 2px solid  #1a1a2e;
 }
+
 section {
-    position: fixed;  
-    background-color: #dd8295;
+    position: fixed;
+    background-color: bisque;
     top: 110px;
     left: 20%;
     width: 80%;
     bottom: 20px;
     padding: 10px;
     overflow-y: scroll;
+    color: #16213e;
 }
 footer {
-    position: fixed;  
+    position: fixed;
     background-color: black;
-    color: white;    
+    color: white;
     left: 0;
     width: 100%;
     height: 20px;
@@ -44,9 +47,9 @@ footer {
 }
 
 nav {
-   display: flex;
-   justify-content: space-between;
-   margin: 0 10px;
+    display: flex;
+    justify-content: space-between;
+    margin: 0 10px;
 }
 
 .logo {
@@ -75,7 +78,7 @@ nav {
 
 .menu-item {
     padding: 5px;
-    background-color: green;
+    background-color: #e94560;
     border-radius: 10px;
 }
 
