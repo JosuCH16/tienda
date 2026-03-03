@@ -5,7 +5,7 @@ package com.tienda.service;
  * @author JUser AQUI SE HACE EL CRUD
  */
 import com.tienda.domain.Categoria;
-import com.tienda.repsository.CategoriaRepository;
+import com.tienda.repository.CategoriaRepository;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;

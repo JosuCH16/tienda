@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 
-
+@Configuration
 public class StorageConfig {
     @Value("${firebase.json.path}")
     private String jsonPath;

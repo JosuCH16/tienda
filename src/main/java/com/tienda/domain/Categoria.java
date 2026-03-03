@@ -10,6 +10,8 @@ import java.io.Serializable;
 import lombok.Data;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import java.util.List;
+import jakarta.persistence.OneToMany;
 
 /**
  *
@@ -34,10 +36,12 @@ public class Categoria implements Serializable {
     private String descripcion;
 
     @Column(length = 1024)
-    @Size(max = 1024)
     private String rutaImagen;
 
     @Column(name = "activo ")
     private Boolean activo;
-
+    
+    //Relacion de uno a muchos con la clase Producto
+    @OneToMany(mappedBy = "categoria")
+    private List<Producto> productos;
 }
