@@ -1,19 +1,72 @@
-
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
-<head th:replace="~{general/fragmentos :: head}">
-    <title>TechShop</title>
-</head>
-<body>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{layout/plantilla :: head}">
+        <title>Arboles</title>
+    </head>
+    <body>
+        <header th:replace="~{layout/plantilla :: header}"/>
+        <section th:replace="~{layout/plantilla :: menu}"/>
 
-    <header th:replace="~{general/fragmentos :: header}"/>
+        <section th:fragment="listadoArboles" id="arboles">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-9">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>[[#{arbol.listado}]]</h4>
+                            </div>
+                            <div th:if="${arboles != null and !arboles.empty}">
+                                <table class="table table-striped table-hover">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>#</th>
+                                            <th th:text="#{arbol.descripcion}">Descripción</th>
+                                            <th th:text="#{arbol.activo}">Activo</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="arbol, contador : ${arboles}">
+                                            <td>[[${contador.count}]]</td>
+                                            <td>[[${arbol.descripcion}]]</td>
+                                            <td th:text="${arbol.activo} ? 'Activa' : 'Inactiva'" />
+                                            <td>
+                                                <a th:href="@{/arbol/eliminar/}+${arbol.idArbol}"
+                                                   class="btn btn-danger">
+                                                    <i class="fas fa-trash"></i> [[#{accion.eliminar}]]
+                                                </a>
+                                                <a th:href="@{/arbol/modificar/}+${arbol.idArbol}"
+                                                   class="btn btn-success">
+                                                    <i class="fas fa-pencil"></i> [[#{accion.actualizar}]]
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="text-center p-2" th:if="${arboles == null or arboles.empty}">
+                                <span>[[#{lista.vacia}]]</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-center bg-success text-white mb-3">
+                            <div class="card-body">
+                                <h3>[[#{arbol.total}]]</h3>
+                                <h4 class="display-4">[[${totalArboles}]]</h4>
+                            </div>
+                        </div>
+                        <div class="card text-center p-2">
+                             <a th:href="@{/arbol/nuevo}" class="btn btn-primary btn-block">
+                                <i class="fas fa-plus"></i> [[#{arbol.agregar}]]
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-    <section th:replace="~{categoria/fragmentos :: agregar}"/>
-    <section th:replace="~{categoria/fragmentos :: listado}"/>
-
-    <footer th:replace="~{general/fragmentos :: footer}"/>
-
-</body>
+        <footer th:replace="~{layout/plantilla :: footer}"/>
+    </body>
 </html>

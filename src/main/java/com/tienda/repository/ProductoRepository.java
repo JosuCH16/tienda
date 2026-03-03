@@ -11,4 +11,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ProductoRepository extends JpaRepository<Producto, Integer> {
     public List<Producto> findByActivoTrue();
+    
+    pubicl List<Produto> findByPrecioBetweenOrderByPrecioAsc(double precioInf, double precioSup;
 }
