@@ -1,11 +1,11 @@
 body {
-    background-color: #1a1a2e;
+    background-color: #cfdcff;
     font-family: serif;
 }
 
 header {
     position: fixed;
-    background-color: #16213e;
+    background-color: #466cd4;
     top: 0;
     left: 0;
     width: 100%;
@@ -15,7 +15,7 @@ header {
 
 aside {
     position: fixed;
-    background-color: #0f3460;
+    background-color: #cfdcff;
     top: 110px;
     left: 0;
     width: 20%;
