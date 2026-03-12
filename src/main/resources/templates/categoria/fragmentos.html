@@ -2,10 +2,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
-    <head th:replace="~{general/fragmentos :: head}"/>
-
+    
+    <head th:replace="~{general/plantilla :: head}">
+        <title>TechShop</title>
+    </head>
+    
     <body>
-        <div th:fragment="agregar">
+        <!-- fragmento 1 para Agregar categoria en ventana modal -->
+        <section th:fragment="agregar">
+            <!-- Button trigger modal -->
             <div class='row py-4 mb-2 bg-light'>
                 <div class='col-md-1'></div>
                 <div class='col-md-3'>
@@ -14,6 +19,7 @@
                         <i class="fa-solid fa-plus"></i> [[#{categoria.agregar}]]</button>
                 </div>
             </div>
+            <!-- Modal -->
             <div class="modal fade" id="agregarCategoriaModal"  tabindex="-1" 
                  aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -48,9 +54,10 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <div th:fragment="listado" class="p-3">
+        <!-- fragmento 2 para el listado de categorias -->
+        <section th:fragment="listado" class="p-3">
             <div class="row p-3">
                 <div class="col-md-9">
                     <div class="card p-2">
@@ -62,6 +69,7 @@
                                             <th>[[#{categoria.descripcion}]]</th>
                                             <th>[[#{categoria.imagen}]]</th>
                                             <th>[[#{categoria.activo}]]</th>
+                                            <<th sec:authorize="hasRole('ROLE_ADMIN')"></th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -71,13 +79,13 @@
                                             <td>[[${c.descripcion}]]</td>
                                             <td><img th:src="@{${c.rutaImagen}}" alt="noData" height="75"/></td>
                                             <td th:text="${c.activo} ? 'Activa':'Inactiva'"></td>
-                                            <td>
+                                            <td  sec:authorize="hasRole('ROLE_ADMIN')">
                                                 <button type="button" class="btn btn-danger"
                                                         data-bs-toggle="modal" data-bs-target="#confirmModal"
                                                         th:data-bs-id="${c.idCategoria}"
                                                         th:data-bs-descripcion="${c.descripcion}">
                                                     <i class="fa-solid fa-trash"></i> [[#{accion.eliminar}]]
-                                                </button>                                            
+                                                </button>                                           
                                                 <a th:href="@{/categoria/modificar/}+${c.idCategoria}" class="btn btn-warning">
                                                     <i class="fas fa-pencil-alt"></i> [[#{accion.actualizar}]]
                                                 </a>                                                
@@ -97,9 +105,10 @@
                         </div></div>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <div th:fragment="editar">
+        <!-- 3 Fragmento que se utiliza en la página modifca.html -->
+        <section th:fragment="editar">
             <div class="row">
                 <div class="col-md-2"></div>
                 <div class="col-md-8">
@@ -145,9 +154,10 @@
                     </form>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <div th:fragment="confirmarEliminar">
+        <!-- 4 fragmento que se utiliza para confirmar que se desea eliminar una categoria -->
+        <section th:fragment="confirmarEliminar">
             <div class="modal fade" 
                  id="confirmModal" 
                  tabindex="-1" 
@@ -179,7 +189,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
 
     </body>
 </html>

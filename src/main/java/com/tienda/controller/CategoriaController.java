@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.tienda.controller;
 
 import com.tienda.domain.Categoria;
@@ -21,24 +17,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-
-/**
- *
- * @author JUser
- */
 @Controller
 @RequestMapping("/categoria")
-public class CategoriaController {
+public class CategoriaController 
+{
 
-   @Autowired
+    @Autowired
     private CategoriaService categoriaService;
 
     @GetMapping("/listado")
     public String inicio(Model model) {
         var categorias = categoriaService.getCategorias(false);
-        
-        System.out.println(">>> DEBUG: Cantidad de categorías encontradas: " + categorias.size());
-        
         model.addAttribute("categorias", categorias);
         model.addAttribute("totalCategorias", categorias.size());
         return "/categoria/listado";
