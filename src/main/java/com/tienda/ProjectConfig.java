@@ -1,10 +1,15 @@
 package com.tienda;
 
+import com.tienda.domain.Ruta;
+import com.tienda.service.RutaService;
 import java.util.Locale;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -97,16 +102,26 @@ public class ProjectConfig implements WebMvcConfigurer {
     public static final String[] USUARIO_URLS = {
         "/facturar/carrito"
     };
+    
+    @Autowired
+    private RutaService rutaService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(request -> request
-                .requestMatchers(PUBLIC_URLS).permitAll()
-                .requestMatchers(ADMIN_URLS).hasRole("ADMIN")
-                .requestMatchers(ADMIN_OR_VENDEDOR_URLS).hasAnyRole("ADMIN", "VENDEDOR")
-                .requestMatchers(USUARIO_URLS).hasRole("USUARIO")
-                .anyRequest().authenticated()
-        ).formLogin(form -> form // Configuración de formulario de login
+
+        var rutas = rutaService.getRutas();
+        http.authorizeHttpRequests(requests -> {
+            for (Ruta ruta : rutas) {
+                if (ruta.isRequiereRol()) {
+                    requests.requestMatchers(ruta.getRuta()).hasRole(ruta.getRol().getRol());
+                } else {
+                    requests.requestMatchers(ruta.getRuta()).permitAll();
+                }
+            }
+            requests.anyRequest().authenticated();
+        });
+       
+        http.formLogin(form -> form // Configuración de formulario de login
                 .loginPage("/login")
                 .loginProcessingUrl("/login")
                 .defaultSuccessUrl("/", true)
@@ -132,7 +147,7 @@ public class ProjectConfig implements WebMvcConfigurer {
         return new BCryptPasswordEncoder();
     }
 
-    //Este método será reemplazado la siguiente semana
+    /* //Este método será reemplazado la siguiente semana
     @Bean
     public UserDetailsService users(PasswordEncoder passwordEncoder) {
         UserDetails admin = User.builder()
@@ -154,6 +169,12 @@ public class ProjectConfig implements WebMvcConfigurer {
                 .build();
 
         return new InMemoryUserDetailsManager(admin, sales, user);
+    } */
+    @Autowired
+    public void configurerGlobal(AuthenticationManagerBuilder build,
+            @Lazy PasswordEncoder passwordEncoder,
+            @Lazy UserDetailsService userDetailsService) throws Exception {
+        build.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
     }
 
 }
