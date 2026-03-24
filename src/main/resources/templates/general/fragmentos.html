@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security6"
     <head th:fragment="head">
         <title>TechShop</title>
         <meta charset="UTF-8"/>
         <link rel="icon" type="image/png" sizes="16x16" href="/fav/favicon-16x16.png"/>
-
-        <link th:href="@{/webjars/bootstrap/5.3.2/css/bootstrap.min.css}" rel="stylesheet"/>
-        <link th:href="@{/webjars/font-awesome/6.5.1/css/all.min.css}" rel="stylesheet"/>
-
+        <link rel="icon" type="image/png" sizes="32x32" href="/fav/favicon-32x32.png"/>
+        <link rel="icon" type="image/png" sizes="96x96" href="/fav/favicon-96x96.png"/>
+        <link rel="icon" type="image/png" sizes="256x256" href="/fav/favicon-256x256.png"/>
+        <link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
+        <link th:href="@{/webjars/font-awesome/css/all.css}" rel="stylesheet"/>
         <script th:src="@{/js/rutinas.js}"></script>
-
-        <script th:src="@{/webjars/jquery/3.7.1/jquery.min.js}"></script>
-        <script th:src="@{/webjars/popper.js/2.11.7/umd/popper.min.js}"></script>
-        <script th:src="@{/webjars/bootstrap/5.3.2/js/bootstrap.min.js}"></script>
+        <script th:src="@{/webjars/jquery/jquery.min.js} "></script>
+        <script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+        <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
     </head>
     <body>
         <header th:fragment="header" class="header">
@@ -81,11 +81,11 @@
                             </li>
                         </ul>
 
-                        <ul
+                        <ul>
                             <li class="nav-item my-auto">
                                 <form method="post" th:action="@{/logout}">
                                     <button class="btn nav-link" type="submit">
-                                        <i class="fas fa-sign-out-alt"></i>
+                                        <i class="fas fa-sign-in-alt"></i>
                                         <span class="ms-1">Logout</span>
                                     </button>
                                 </form>

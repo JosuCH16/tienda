@@ -2,8 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
-
-    <<head th: fragment="head">
+    <head th: fragment="head">
         <title>TechShop</title>
         <meta charset="UTF-8"/>
         <link rel="icon" type="image/png" sizes="16x16" href="/fav/favicon-16x16.png"/>
@@ -17,40 +16,61 @@
         <script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
         <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
     </head>
-
     <body>
-        <!-- fragmento 1 para Agregar categoria en ventana modal -->
+        <!-- fragmento 1 para Agregar usuario en ventana modal -->
         <section th:fragment="agregar">
             <!-- Button trigger modal -->
             <div class='row py-4 mb-2 bg-light'>
                 <div class='col-md-1'></div>
-                <div class='col-md-3'>
+                <div class='col-md-3'  sec:authorize="hasRole('ROLE_ADMIN')">
                     <button type="button" class="btn btn-primary"  sec:authorize="hasRole('ROLE_ADMIN')"
-                            data-bs-toggle="modal" data-bs-target="#agregarCategoriaModal">
-                        <i class="fa-solid fa-plus"></i> [[#{categoria.agregar}]]</button>
+                            data-bs-toggle="modal" data-bs-target="#agregarUsuarioModal">
+                        <i class="fa-solid fa-plus"></i> [[#{usuario.agregar}]]</button>
                 </div>
             </div>
             <!-- Modal -->
-            <div class="modal fade" id="agregarCategoriaModal"  tabindex="-1" 
+            <div class="modal fade" id="agregarUsuarioModal"  tabindex="-1" 
                  aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header bg-info text-white">
                             <h1 class="modal-title fs-5" id="exampleModalLabel">
-                                <i class="fa-solid fa-layer-group"></i> [[#{categoria.agregar}]]</h1>
+                                <i class="fa-solid fa-layer-group"></i> [[#{usuario.agregar}]]</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <form th:action='@{/categoria/guardar}' th:object='${categoria}'
+                        <form th:action='@{/usuario/guardar}' th:object='${usuario}'
                               class='was-validated' enctype="multipart/form-data" method="post">
                             <div class="modal-body">
                                 <div class='mb-3'>
-                                    <label>[[#{categoria.descripcion}]]</label>
-                                    <input type="text" name='descripcion' class='form-control' required="true"/></div>
+                                    <label>[[#{usuario.username}]]</label>
+                                    <input type="text" name='username' class='form-control' maxlength="30" required/>                                   
+                                </div>
                                 <div class='mb-3'>
-                                    <label>[[#{categoria.activo}]]</label>
-                                    <input type="checkbox" name='activo' class='form-check-input'/></div>
+                                    <label>[[#{usuario.password}]]</label>
+                                    <input type="password" name='password' class='form-control' maxlength="15" required/>                                   
+                                </div>
                                 <div class='mb-3'>
-                                    <label>[[#{categoria.imagen}]]</label>
+                                    <label>[[#{usuario.nombre}]]</label>
+                                    <input type="text" name='nombre' class='form-control' maxlength="20" required/>                                    
+                                </div>
+                                <div class='mb-3'>
+                                    <label>[[#{usuario.apellidos}]]</label>
+                                    <input type="text" name='apellidos' class='form-control' maxlength="30" required/>                                    
+                                </div>
+                                <div class='mb-3'>
+                                    <label>[[#{usuario.correo}]]</label>
+                                    <input type="email" name='correo' class='form-control' maxlength="75" required/>                                   
+                                </div>
+                                <div class='mb-3'>
+                                    <label>[[#{usuario.telefono}]]</label>
+                                    <input type="tel" name='telefono' class='form-control' maxlength="25"/>
+                                </div>
+                                <div class='mb-3'>
+                                    <label>[[#{usuario.activo}]]</label>
+                                    <input type="checkbox" name='activo' class='form-check-input'/>
+                                </div>
+                                <div class='mb-3'>
+                                    <label>[[#{usuario.imagen}]]</label>
                                     <input type="file" name='imagenFile' onchange='mostrarImagen(this);'
                                            class='form-control'/>
                                     <img id='blah' src='#' alt='imagen de categoría' height="200"/></div>
@@ -67,52 +87,55 @@
             </div>
         </section>
 
-        <!-- fragmento 2 para el listado de categorias -->
+        <!-- fragmento 2 para el listado de usuarios -->
         <section th:fragment="listado" class="p-3">
             <div class="row p-3">
                 <div class="col-md-9">
                     <div class="card p-2">
-                        <div class="card-header"><h4>[[#{categoria.listado}]]</h4></div>
+                        <div class="card-header"><h4>[[#{usuario.listado}]]</h4></div>
                         <div class="card-body">
-                            <div th:if="${categorias != null and !categorias.empty}">
+                            <div th:if="${usuarios != null and !usuarios.empty}">
                                 <table class="table table-striped table-hover">
-                                    <thead><tr><th>#</th>
-                                            <th>[[#{categoria.descripcion}]]</th>
-                                            <th>[[#{categoria.imagen}]]</th>
-                                            <th>[[#{categoria.activo}]]</th>
-                                            <<th sec:authorize="hasRole('ROLE_ADMIN')"></th>
-                                            <th></th>
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>[[#{usuario.apellidos}]]</th>
+                                            <th>[[#{usuario.nombre}]]</th>
+                                            <th>[[#{usuario.imagen}]]</th>
+                                            <th>[[#{usuario.activo}]]</th>
+                                            <th sec:authorize="hasRole('ROLE_ADMIN')"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr th:each="c : ${categorias}">
-                                            <td>[[${c.idCategoria}]]</td>
-                                            <td>[[${c.descripcion}]]</td>
-                                            <td><img th:src="@{${c.rutaImagen}}" alt="noData" height="75"/></td>
-                                            <td th:text="${c.activo} ? 'Activa':'Inactiva'"></td>
+                                        <tr th:each="u : ${usuarios}">
+                                            <td>[[${u.idUsuario}]]</td>
+                                            <td>[[${u.apellidos}]]</td>
+                                            <td>[[${u.nombre}]]</td>
+                                            <td><img th:src="@{${u.rutaImagen}}" alt="noData" height="75"/></td>
+                                            <td th:text="${u.activo} ? 'Activa':'Inactiva'"></td>
                                             <td  sec:authorize="hasRole('ROLE_ADMIN')">
                                                 <button type="button" class="btn btn-danger"
                                                         data-bs-toggle="modal" data-bs-target="#confirmModal"
-                                                        th:data-bs-id="${c.idCategoria}"
-                                                        th:data-bs-descripcion="${c.descripcion}">
+                                                        th:data-bs-id="${u.idUsuario}"
+                                                        th:data-bs-descripcion="${u.nombre} + ${u.apellidos}">
                                                     <i class="fa-solid fa-trash"></i> [[#{accion.eliminar}]]
                                                 </button>                                           
-                                                <a th:href="@{/categoria/modificar/}+${c.idCategoria}" class="btn btn-warning">
+                                                <a th:href="@{/usuario/modificar/}+${u.idUsuario}" class="btn btn-warning">
                                                     <i class="fas fa-pencil-alt"></i> [[#{accion.actualizar}]]
                                                 </a>                                                
                                             </td>
                                         </tr>
                                     </tbody>
                                 </table></div>
-                            <div class="text-center p-2" th:if="${categorias == null or categorias.empty}">
+                            <div class="text-center p-2" th:if="${usuarios == null or usuarios.empty}">
                                 <span>[[#{lista.vacia}]]</span></div>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="card text-center bg-success text-white mb-3">
-                        <div class="card-body"><h3>[[#{categoria.total}]]</h3>
-                            <h4 class="fs-2"><i class="fas fa-layer-group"></i> [[${totalCategorias}]]</h4>
+                        <div class="card-body"><h3>[[#{usuario.total}]]</h3>
+                            <h4 class="fs-2"><i class="fas fa-layer-group"></i> [[${totalUsuarios}]]</h4>
                         </div></div>
                 </div>
             </div>
@@ -123,13 +146,13 @@
             <div class="row">
                 <div class="col-md-2"></div>
                 <div class="col-md-8">
-                    <form method="POST" th:action="@{/categoria/guardar}" 
-                          th:object="${categoria}" class="was-validated" enctype="multipart/form-data">
-                        <input type="hidden" name="idCategoria" th:field="*{idCategoria}"/>
+                    <form method="POST" th:action="@{/usuario/guardar}" 
+                          th:object="${usuario}" class="was-validated" enctype="multipart/form-data">
+                        <input type="hidden" name="idUsuario" th:field="*{idUsuario}"/>
                         <input type="hidden" name="rutaImagen" th:field="*{rutaImagen}"/>
                         <div class="row py-4 mb-4 bg-light">
                             <div class="col-md-4 d-grid">
-                                <a th:href="@{/categoria/listado}" class="btn btn-primary">
+                                <a th:href="@{/usuario/listado}" class="btn btn-primary">
                                     <i class="fas fa-arrow-left"></i> [[#{accion.regresar}]]</a>
                             </div>                                
                             <div class="col-md-4 d-grid">
@@ -142,21 +165,55 @@
                                 <div class="card">
                                     <div class="card-header"><h4>[[#{accion.actualizar}]]</h4></div>
                                     <div class="card-body">
-                                        <div class="mb-3">
-                                            <label for="descripcion">[[#{categoria.descripcion}]]</label>
-                                            <input type="text" class="form-control" name="descripcion" 
-                                                   th:field="*{descripcion}" required="true"/>
+                                        <div class='mb-3'>
+                                            <label>[[#{usuario.username}]]</label>
+                                            <input type="text" name='username' th:field='*{username}' class='form-control' maxlength="30" required/>
+                                            <div th:if="${#fields.hasErrors('username')}" class="text-danger">
+                                                <p th:errors="*{username}"></p>
+                                            </div>
+                                        </div>
+                                        <div class='mb-3'>
+                                            <label>[[#{usuario.password}]]</label>
+                                            <input type="password" name='password' th:field='*{password}' class='form-control' maxlength="25"/>
+                                            <div th:if="${#fields.hasErrors('password')}" class="text-danger">
+                                                <p th:errors="*{password}"></p>
+                                            </div>
+                                        </div> 
+                                        <div class='mb-3'>
+                                            <label>[[#{usuario.nombre}]]</label>
+                                            <input type="text" name='nombre' th:field='*{nombre}' class='form-control' maxlength="20" required/>
+                                            <div th:if="${#fields.hasErrors('nombre')}" class="text-danger">
+                                                <p th:errors="*{nombre}"></p>
+                                            </div>
+                                        </div>
+                                        <div class='mb-3'>
+                                            <label>[[#{usuario.apellidos}]]</label>
+                                            <input type="text" name='apellidos' th:field='*{apellidos}' class='form-control' maxlength="30" required/>
+                                            <div th:if="${#fields.hasErrors('apellidos')}" class="text-danger">
+                                                <p th:errors="*{apellidos}"></p>
+                                            </div>
+                                        </div>
+                                        <div class='mb-3'>
+                                            <label>[[#{usuario.correo}]]</label>
+                                            <input type="email" name='correo' th:field='*{correo}' class='form-control' maxlength="75" required/>
+                                            <div th:if="${#fields.hasErrors('correo')}" class="text-danger">
+                                                <p th:errors="*{correo}"></p>
+                                            </div>
+                                        </div>
+                                        <div class='mb-3'>
+                                            <label>[[#{usuario.telefono}]]</label>
+                                            <input type="tel" name='telefono' th:field='*{telefono}' class='form-control' maxlength="25"/>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="activo">[[#{categoria.activo}]]</label>
+                                            <label for="activo">[[#{usuario.activo}]]</label>
                                             <input class="form-check-input" type="checkbox" 
                                                    name="activo" id="activo" th:field="*{activo}"/>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="imagen">[[#{categoria.imagen}]]</label>
+                                            <label for="imagen">[[#{usuario.imagen}]]</label>
                                             <input class="form-control" type="file" name="imagenFile"
                                                    onchange="mostrarImagen(this);" />
-                                            <img id="blah" th:src="@{${categoria.rutaImagen}}" alt="your image" height="200"/>
+                                            <img id="blah" th:src="@{${usuario.rutaImagen}}" alt="your image" height="200"/>
                                         </div>
                                     </div>
                                 </div>
@@ -167,7 +224,7 @@
             </div>
         </section>
 
-        <!-- 4 fragmento que se utiliza para confirmar que se desea eliminar una categoria -->
+        <!-- 4 fragmento que se utiliza para confirmar que se desea eliminar una usuario -->
         <section th:fragment="confirmarEliminar">
             <div class="modal fade" 
                  id="confirmModal" 
@@ -176,8 +233,8 @@
                  aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered custom-modal-animation">
                     <div class="modal-content animate-slide-up">
-                        <form th:action="@{/categoria/eliminar}" th:object="${categoria}" method="post">
-                            <input type="hidden" name="idCategoria" id="modalId"/>
+                        <form th:action="@{/usuario/eliminar}" th:object="${usuario}" method="post">
+                            <input type="hidden" name="idUsuario" id="modalId"/>
                             <div class="modal-header bg-warning text-white">
                                 <h5 class="modal-title" id="modalLabel">
                                     <i class="fa-solid fa-circle-radiation"></i> [[#{accion.confirmar}]]
