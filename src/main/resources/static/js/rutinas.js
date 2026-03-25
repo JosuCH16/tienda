@@ -31,3 +31,5 @@ document.addEventListener('DOMContentLoaded', function () {
 setTimeout(() => {
     document.querySelectorAll('.toast').forEach(t => t.classList.remove('show'));
 }, 4000);
+    }
+});

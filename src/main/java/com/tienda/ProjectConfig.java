@@ -111,6 +111,9 @@ public class ProjectConfig implements WebMvcConfigurer {
 
         var rutas = rutaService.getRutas();
         http.authorizeHttpRequests(requests -> {
+            
+            requests.requestMatchers(PUBLIC_URLS).permitAll();
+            
             for (Ruta ruta : rutas) {
                 if (ruta.isRequiereRol()) {
                     requests.requestMatchers(ruta.getRuta()).hasRole(ruta.getRol().getRol());
