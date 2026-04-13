@@ -1,4 +1,4 @@
-    package com.tienda.domain;
+package com.tienda.domain;
 
 public enum EstadoFactura {
     Activa("Activa"),
@@ -15,3 +15,4 @@ public enum EstadoFactura {
         return valorBD;
     }
 }
+

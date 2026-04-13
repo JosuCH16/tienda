@@ -7,19 +7,18 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;
 import lombok.Data;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-
 
 @Data
 @Entity
 @Table(name = "categoria")
 public class Categoria implements Serializable {
 
-    //Se recomienda añadir un serialVersionUID
+    // Se recomienda añadir un serialVersionUID
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -36,10 +35,11 @@ public class Categoria implements Serializable {
     @Size(max = 1024)
     private String rutaImagen;
 
-    @Column(name = "activo ")
-    private Boolean activo;
+    @Column(name = "activo")
     
-    //Relación de una a muchos con la clase producto
+    private Boolean activo;     
+      // Relación de uno a muchos con la clase Producto
+    // Sin "cascade" ni "orphanRemoval" para evitar la propagación de operaciones.
     @OneToMany(mappedBy = "categoria")
     private List<Producto> productos;
 

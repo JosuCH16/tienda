@@ -7,35 +7,42 @@ function addCart(formulario) {
     var idProducto = $(formulario).find('input[name="idProducto"]').val();
     var ruta = $(formulario).attr('action') || '/carrito/agregar'; // Lee la ruta del atributo 'action'
     
+    alert(idProducto);
+    alert(ruta);
+    
     // 2. Seguridad (CSRF Token)
     var csrfToken = $("meta[name='_csrf']").attr("content");
     var csrfHeader = $("meta[name='_csrf_header']").attr("content");
 
+    alert(csrfToken);
+    alert(csrfHeader);
+    
     // 3. Petición AJAX (solo se envía el ID del producto)
     $.ajax({
         url: ruta,
-        type: 'POST', 
+        type: 'POST',
         data: {
             // ** CRÍTICO: SOLO ENVIAMOS idProducto **
-            idProducto: idProducto 
+            idProducto: idProducto
         },
-        beforeSend: function(xhr) {
+        beforeSend: function (xhr) {
             if (csrfHeader && csrfToken) {
                 xhr.setRequestHeader(csrfHeader, csrfToken);
             }
         },
-        success: function(response) {
+        success: function (response) {
             // Actualiza el fragmento HTML del carrito
             $("#resultBlock").html(response);
             console.log("Producto agregado con cantidad por defecto (1).");
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
             // Manejo de errores
             var mensaje = xhr.responseText || 'Error en la conexión.';
             alert("Error al agregar producto: " + mensaje);
         }
     });
 }
+
 
 // funcion para hacer un preview de una imagen 
 function mostrarImagen(input) {
